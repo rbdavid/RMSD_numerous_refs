@@ -1,6 +1,6 @@
 #!/bin/bash 
-#SBATCH --job-name=7system.rmsd_pca
-#SBATCH --output=7system.traj_rmsd_pca.output 
+#SBATCH --job-name=7system.sel_rmsd
+#SBATCH --output=7system.sel_rmsd.output 
 #SBATCH --time=96:00:00 
 #SBATCH --nodes=1
 #SBATCH --exclusive 
@@ -10,21 +10,19 @@ export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/software/usr/hpcx-v1.2.0-292-gcc-MLNX_
 
 export PYTHON_EGG_CACHE="./"
 
-#time ./Traj_writing.py ../../../../../AMBER_ssrna_adp_pi/truncated.pdb ../../../../../ 7system_backbone.dcd > traj_writing.output
+time ./RMSD_analysis.py ../../../../Avg_structure/ ../../../../../ 0 &
 
-#time ./RMSD.avg_structures.py ../../../../Avg_structure/ reference_structure.pdb 7system_backbone.dcd > rmsd_calc.output
+time ./RMSD_analysis.py ../../../../Avg_structure/ ../../../../../ 1 &
 
-#time ./PCA.avg_structures.py > pca_calc.output
+time ./RMSD_analysis.py ../../../../Avg_structure/ ../../../../../ 2 &
 
-time ... 1 &
+time ./RMSD_analysis.py ../../../../Avg_structure/ ../../../../../ 3 &
 
-time ... 2 &
+time ./RMSD_analysis.py ../../../../Avg_structure/ ../../../../../ 4 &
 
-time ... 3 &
+time ./RMSD_analysis.py ../../../../Avg_structure/ ../../../../../ 5 &
 
-time ... 4 &
+time ./RMSD_analysis.py ../../../../Avg_structure/ ../../../../../ 6 &
 
 wait
-
-
 

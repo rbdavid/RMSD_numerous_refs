@@ -19,8 +19,7 @@ from distance_functions import *
 
 ref_loc = sys.argv[1]
 traj_loc = sys.argv[2]
-grab_frame = sys.argv[3]
-number = sys.argv[4]		# Corresponds to which system you want to compare against...
+number = int(sys.argv[3])		# Corresponds to which system you want to compare against...
 
 flush = sys.stdout.flush
 makedir = os.mkdir
@@ -30,18 +29,16 @@ alignment = 'name CA and (resid 19:25 or resid 50:55 or resid 90:94 or resid 112
 important = 'protein or nucleic or resname A5 or resname A3 or resname U5 or resname atp or resname adp or resname PHX or resname MG'
 
 ref_list = []
-ref_list.append(['AMBER_apo', 51, 100])	
-ref_list.append(['AMBER_atp', 51, 100])		
-ref_list.append(['AMBER_ssrna', 51, 100])		
-ref_list.append(['AMBER_ssrna_atp', 51, 100])	
-ref_list.append(['AMBER_ssrna_adp_pi', 51, 100])	
-ref_list.append(['AMBER_ssrna_adp', 51, 100])	
-ref_list.append(['AMBER_ssrna_pi', 51, 100])		
+ref_list.append(['AMBER_apo', 21, 100])	
+ref_list.append(['AMBER_atp', 21, 100])		
+ref_list.append(['AMBER_ssrna', 21, 100])		
+ref_list.append(['AMBER_ssrna_atp', 21, 100])	
+ref_list.append(['AMBER_ssrna_adp_pi', 21, 100])	
+ref_list.append(['AMBER_ssrna_adp', 21, 100])	
+ref_list.append(['AMBER_ssrna_pi', 21, 100])		
 
 nSys = len(ref_list)
-***nSel = len(sel_list.sel)
-
-#selection = ... READ IN A SELECTION TO PERFORM THIS ANALYSIS ON... THEN RUN THIS ANALYSIS IN PARAELLEL FOR ALL OF THE SELECTIONS DEEMED IMPORTANT...
+nSel = len(sel_list.sel)
 
 # ----------------------------------------
 # SUBROUTINES:
@@ -55,9 +52,9 @@ def ffprint(string):
 
 makedir('%s_comparison' %(ref_list[number][0]))
 changedir('%s_comparison' %(ref_list[number][0]))
-out1 = open('%s.output' %(ref_list[number][0])) 
+out1 = open('%s.output' %(ref_list[number][0]),'w',1) 
 ref_file = '%s%s/51_to_100/avg_structure.pdb' %(ref_loc,ref_list[number][0])
-out1.write('Reference structure: %s' %(ref_file))
+out1.write('Reference structure: %s\n' %(ref_file))
 
 ref = MDAnalysis.Universe(ref_file)
 ref_all = ref.select_atoms('all')
@@ -72,15 +69,15 @@ pos_list = []
 for i in range(nSel):
 	selection = sel_list.sel[i][1]
 	temp_sel = ref.select_atoms(selection)
-	temp_pos = temp_sel.cordinates()
+	temp_pos = temp_sel.coordinates()
 	pos_list.append(temp_pos)
 
-out1.write('Finished collecting the reference structure data')
+out1.write('Finished collecting the reference structure data\n')
 
-out2 = open('%s.rmsd.dat' %(ref_list[number][0]))
+out2 = open('%s.rmsd.dat' %(ref_list[number][0]),'w')
 # INITIALIZING UNIVERSES, LOADING TRAJECTORIES IN, ANALYZING, ETC...
 for i in range(nSys):
-	out1.write('Loading in Trajectories from %s' %(ref_list[i][0]))
+	out1.write('Loading in Trajectories from %s\n' %(ref_list[i][0]))
 	u = MDAnalysis.Universe('%s%s/truncated.pdb' %(traj_loc,ref_list[i][0]))
 	
 	u_all = u.select_atoms('all')
@@ -99,10 +96,10 @@ for i in range(nSys):
 		selection = sel_list.sel[b][1]
 		temp_sel = u.select_atoms(selection)
 		u_selection_list.append(temp_sel)
-		out1.write('%s corresponds to %s atom selection' %(sel_list.sel[b][0],u_selection_list[b]))
+		out1.write('%s corresponds to %s atom selection\n' %(sel_list.sel[b][0],u_selection_list[b]))
 
 	count = 0
-	out1.write('Beginning trajectory analysis from system %s' %(ref_list[i][0]))
+	out1.write('Beginning trajectory analysis from system %s\n' %(ref_list[i][0]))
 	for j in range(len(traj_list)):
 		u.load_new(traj_list[j])
 		nSteps = len(u.trajectory)
@@ -116,10 +113,10 @@ for i in range(nSys):
 				out2.write('%f   ' %(rmsd))
 			out2.write('\n')
 
-			if ts.frame%500 ==0:
-				out1.write('Analyzed %d in Trajectory %d' %(ts.frame,traj_list[j]))
+			if ts.frame%2500 ==0:
+				out1.write('Analyzed %d in Trajectory %s\n' %(ts.frame,traj_list[j]))
 			count +=1
-	out1.write('Analyzed %d frames from system %s' %(count,ref_list[i][0]))
+	out1.write('Analyzed %d frames from system %s\n' %(count,ref_list[i][0]))
 
 out1.close()
 out2.close()
