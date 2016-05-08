@@ -53,7 +53,7 @@ def ffprint(string):
 makedir('%s_comparison' %(ref_list[number][0]))
 changedir('%s_comparison' %(ref_list[number][0]))
 out1 = open('%s.output' %(ref_list[number][0]),'w',1) 
-ref_file = '%s%s/51_to_100/avg_structure.pdb' %(ref_loc,ref_list[number][0])
+ref_file = '%s%s/truncated.pdb' %(ref_loc,ref_list[number][0])
 out1.write('Reference structure: %s\n' %(ref_file))
 
 ref = MDAnalysis.Universe(ref_file)

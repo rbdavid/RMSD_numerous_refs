@@ -10,19 +10,19 @@ export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/software/usr/hpcx-v1.2.0-292-gcc-MLNX_
 
 export PYTHON_EGG_CACHE="./"
 
-time ./RMSD_analysis.py ../../../../Avg_structure/ ../../../../../ 0 &
+time ./RMSD_analysis.py ../../../../../ ../../../../../ 0 &
 
-time ./RMSD_analysis.py ../../../../Avg_structure/ ../../../../../ 1 &
+time ./RMSD_analysis.py ../../../../../ ../../../../../ 1 &
 
-time ./RMSD_analysis.py ../../../../Avg_structure/ ../../../../../ 2 &
+time ./RMSD_analysis.py ../../../../../ ../../../../../ 2 &
 
-time ./RMSD_analysis.py ../../../../Avg_structure/ ../../../../../ 3 &
+time ./RMSD_analysis.py ../../../../../ ../../../../../ 3 &
 
-time ./RMSD_analysis.py ../../../../Avg_structure/ ../../../../../ 4 &
+time ./RMSD_analysis.py ../../../../../ ../../../../../ 4 &
 
-time ./RMSD_analysis.py ../../../../Avg_structure/ ../../../../../ 5 &
+time ./RMSD_analysis.py ../../../../../ ../../../../../ 5 &
 
-time ./RMSD_analysis.py ../../../../Avg_structure/ ../../../../../ 6 &
+time ./RMSD_analysis.py ../../../../../ ../../../../../ 6 &
 
 wait
 
