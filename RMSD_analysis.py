@@ -95,8 +95,9 @@ for i in range(nSys):
 	for b in range(nSel):
 		selection = sel_list.sel[b][1]
 		temp_sel = u.select_atoms(selection)
-		u_selection_list.append(temp_sel)
-		out1.write('%s corresponds to %s atom selection\n' %(sel_list.sel[b][0],u_selection_list[b]))
+		temp_nAtoms = len(temp_sel.atoms)
+		u_selection_list.append([temp_sel,temp_nAtoms])
+		out1.write('%s corresponds to %s atom selection w/ %d number of atoms\n' %(sel_list.sel[b][0],u_selection_list[b][0],u_selection_list[b][1]))
 
 	count = 0
 	out1.write('Beginning trajectory analysis from system %s\n' %(ref_list[i][0]))
@@ -108,8 +109,8 @@ for i in range(nSys):
 			R, rmsd = rotation_matrix(u_align.coordinates(),pos0)
 			u_important.rotate(R)
 			for m in range(nSel):
-				temp_pos = u_selection_list[m].coordinates()
-				rmsd = RMSD(temp_pos,pos_list[m])
+				temp_pos = u_selection_list[m][0].coordinates()
+				rmsd = RMSD(temp_pos,pos_list[m],u_selection_list[m][1])
 				out2.write('%f   ' %(rmsd))
 			out2.write('\n')
 
