@@ -62,14 +62,14 @@ ref_backbone = ref.select_atoms('backbone')
 ref_align = ref.select_atoms(alignment)
 ref_all.translate(-ref_backbone.center_of_mass())
 
-pos0 = ref_align.coordinates()
+pos0 = ref_align.positions
 
 # SAVE COORDINATES FOR ALL SELECTIONS...
 pos_list = []
 for i in range(nSel):
 	selection = sel_list.sel[i][1]
 	temp_sel = ref.select_atoms(selection)
-	temp_pos = temp_sel.coordinates()
+	temp_pos = temp_sel.positions
 	pos_list.append(temp_pos)
 
 out1.write('Finished collecting the reference structure data\n')
@@ -106,10 +106,10 @@ for i in range(nSys):
 		nSteps = len(u.trajectory)
 		for ts in u.trajectory:
 			u_important.translate(-u_backbone.center_of_mass())
-			R, rmsd = rotation_matrix(u_align.coordinates(),pos0)
+			R, rmsd = rotation_matrix(u_align.positions,pos0)
 			u_important.rotate(R)
 			for m in range(nSel):
-				temp_pos = u_selection_list[m][0].coordinates()
+				temp_pos = u_selection_list[m][0].positions
 				rmsd = RMSD(temp_pos,pos_list[m],u_selection_list[m][1])
 				out2.write('%f   ' %(rmsd))
 			out2.write('\n')
